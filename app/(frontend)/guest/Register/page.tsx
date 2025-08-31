@@ -38,7 +38,7 @@ export default function Register() {
                 }
 
                 const response = await axios.post<AxiosResponse>("/api/register", validatedFields?.data)
-                toast.success(response.data.data);
+                toast.success("Registration Success you'll shortly receive email");
                 registerForm.reset()
 
 
