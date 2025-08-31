@@ -14,12 +14,12 @@ import { z } from 'zod'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { zodResolver } from '@hookform/resolvers/zod'
-import TipTapEditor from '@/app/auth/Notes/components/editor'
 import axios, { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 import { Note } from '@prisma/client'
 import { validateFields } from '@/hooks/validate-fields'
 import { jsonData } from './functions'
+import TipTapEditor from './editor'
 
 interface EditNoteProps {
     note: Note

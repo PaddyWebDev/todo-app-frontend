@@ -3,15 +3,15 @@ import React, { useMemo } from 'react'
 
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
-import Toolbar from '@/app/auth/Notes/components/toolbar'
 import Heading from '@tiptap/extension-heading'
 import OrderedList from '@tiptap/extension-ordered-list'
 import BulletList from '@tiptap/extension-bullet-list'
 import Underline from '@tiptap/extension-underline'
 import TextAlign from '@tiptap/extension-text-align'
-import Footer from '@/app/auth/Notes/components/Footer'
 import CharacterCount from '@tiptap/extension-character-count'
 import { generateHTML } from '@tiptap/html'
+import Footer from './Footer'
+import Toolbar from './toolbar'
 
 
 interface editorProps {

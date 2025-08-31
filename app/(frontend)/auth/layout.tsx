@@ -1,7 +1,7 @@
 import React from 'react'
-import Sidebar from "@/app/auth/components/sidebar"
 import { auth } from '@/auth'
-import Navbar from '@/app/auth/components/navbar';
+import Navbar from './components/navbar';
+import Sidebar from './components/sidebar';
 
 
 interface AuthLayoutProps {

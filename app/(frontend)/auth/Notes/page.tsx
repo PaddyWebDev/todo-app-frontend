@@ -1,6 +1,4 @@
 "use client"
-import EditNote from '@/app/auth/Notes/components/edit-note'
-import CreateNote from '@/app/auth/Notes/components/create-note'
 import DeleteNote from './components/delete-note';
 
 import { getNotesBySessionUserId } from '@/hooks/notes';
@@ -12,6 +10,8 @@ import socket from '@/lib/socket';
 import { formatDateToNow, renderHtml } from './components/functions';
 import React from 'react';
 import { decryptSocketData } from '@/hooks/cryptr';
+import EditNote from './components/edit-note';
+import CreateNote from './components/create-note';
 
 export default function Notes() {
     const [notes, setNotes] = useState<Note[]>([]);

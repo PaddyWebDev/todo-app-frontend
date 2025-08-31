@@ -1,6 +1,6 @@
 "use client"
 import { useRouter } from "next/navigation";
-import Navbar from "./auth/components/navbar";
+import Navbar from "./(frontend)/auth/components/navbar";
 
 export default function Home() {
   const router = useRouter()
