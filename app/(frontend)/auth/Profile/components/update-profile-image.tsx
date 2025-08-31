@@ -20,7 +20,7 @@ export default function UpdateProfileImage({ userData }: UpdateProfileImageProps
     useEffect(() => {
         async function getImage() {
             if (userData.image) {
-                setImageSrc(await decryptImageString(userData.image))
+                setImageSrc(userData.image)
             }
         }
         getImage()
@@ -30,7 +30,7 @@ export default function UpdateProfileImage({ userData }: UpdateProfileImageProps
     async function HandleProfileImageUpdate(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
         if (imageSrc)
-            await updateProfileImage(userData.email, await encryptImageString(imageSrc))
+            await updateProfileImage(userData.email, imageSrc)
                 .then((response: string) => {
                     toast.success(response)
                 }).catch((error: string) => toast.error(error))

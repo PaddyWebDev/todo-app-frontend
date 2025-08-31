@@ -67,42 +67,53 @@ export default function Notes() {
 
 
     return (
-        <section className='w-full h-full p-5 flex items-start flex-col gap-5 '>
+        <section className='w-full h-full p-5  flex-col gap-5 '>
             <div className='w-full flex items-center justify-end'>
                 <CreateNote />
             </div>
-            <div className='flex md:items-start items-center  gap-4 flex-wrap'>
+            <div >
                 {
                     notes?.length > 0 ? (
-                        notes.map((note: Note, id: number) => (
-                            <div key={id} className='dark:bg-neutral-950 bg-neutral-200 md:w-[30rem] w-full border dark:border-neutral-700/70 border-neutral-200/60  p-5 rounded-md space-y-7'>
-                                <div className=' '>
-                                    <h1 className='text-2xl font-semibold leading-tight tracking-tighter'>{note.title}</h1>
-                                    <h5 className='text-md text-neutral-500'>{note.description}</h5>
-                                </div>
-                                <div className='dark:bg-neutral-900 bg-neutral-50 p-5 rounded-md'>
-                                    {
-                                        parse(renderHtml(note.content)) || note.content
-                                    }
-                                </div>
-                                <div className='flex items-center justify-between flex-wrap gap-2'>
-                                    <div>
-                                        <p className='text-sm'>
-                                            {formatDateToNow(note.createdAt)}
-                                        </p>
-                                    </div>
-                                    <div className='flex items-center justify-between gap-5'>
-                                        <EditNote note={note} />
-                                        <DeleteNote noteTitle={note.title} noteId={note.id} />
-                                    </div>
+                        <div className='flex md:items-start items-center  gap-4 flex-wrap'>
+                            {
+                                notes.map((note: Note, id: number) => (
+                                    <div key={id} className='dark:bg-neutral-950 bg-neutral-200 md:w-[30rem] w-full border dark:border-neutral-700/70 border-neutral-200/60  p-5 rounded-md space-y-7'>
+                                        <div className=' '>
+                                            <h1 className='text-2xl font-semibold leading-tight tracking-tighter'>{note.title}</h1>
+                                            <h5 className='text-md text-neutral-500'>{note.description}</h5>
+                                        </div>
+                                        <div className='dark:bg-neutral-900 bg-neutral-50 p-5 rounded-md'>
+                                            {
+                                                parse(renderHtml(note.content)) || note.content
+                                            }
+                                        </div>
+                                        <div className='flex items-center justify-between flex-wrap gap-2'>
+                                            <div>
+                                                <p className='text-sm'>
+                                                    {formatDateToNow(note.createdAt)}
+                                                </p>
+                                            </div>
+                                            <div className='flex items-center justify-between gap-5'>
+                                                <EditNote note={note} />
+                                                <DeleteNote noteTitle={note.title} noteId={note.id} />
+                                            </div>
 
-                                </div>
-                            </div>
-                        ))
-                    ) : ("")
+                                        </div>
+                                    </div>
+                                ))
+                            }
+                        </div>
+                    ) : (
+                        <div className=" mt-[7dvh] shadow-2xl max-w-md rounded-xl flex flex-col items-center justify-center text-center py-10 dark:text-neutral-400 text-neutral-600 mx-auto">
+                            <h1 className="text-3xl font-bold">No notes found</h1>
+                            <p className="text-sm mt-2">
+                                Start by creating a new note to keep <br /> track of your thoughts.
+                            </p>
+                        </div>
+                    )
                 }
             </div>
-        </section>
+        </section >
     )
 }
 

@@ -106,44 +106,57 @@ export default function TodoRoute() {
             <div className='p-5 flex items-center justify-end'>
                 <CreateTodo />
             </div>
-            <div className="flex  items-start flex-wrap gap-5  w-full mt-10   md:pl-[5rem]">
-                {
-                    todos?.map((currTodo: Todo, id: number) => (
-                        <div key={id} className='border-b border-neutral-200 md:w-[35rem] w-full  flex items-center bg-neutral-200/60 dark:border-neutral-950/60 dark:bg-neutral-950/60  gap-3 px-5 py-4 rounded-md'>
-                            <div>
-                                <Checkbox defaultChecked={currTodo.isCompleted} onClick={() => changeCompletionStatusOfTodo(currTodo.id)} />
-                            </div>
-                            <div className='flex items-start flex-col '>
-                                <h1 className='text-lg tracking-tight font-medium'> {currTodo.title}</h1>
-                                <p className='text-sm font-medium dark:text-gray-400 text-gray-500'> {currTodo.description}</p>
-                                {
-                                    currTodo.dueDate && (
-                                        <p className='flex items-center justify-start gap-2 '>
-                                            <span className='dark:text-emerald-500 text-emerald-600 text-sm font-semibold'>
-                                                {
-                                                    // console.log(currTodo.dueDate)
-                                                    formatTimer(currTodo.dueDate)
-                                                }
-                                            </span>
-                                            <AlarmCheck strokeWidth={1.5} className='w-5 h-5' />
-                                        </p>
-                                    )
-                                }
-                            </div>
+            <div className=''>
+                {todos.length > 0 ? (
+                    <div className="flex  items-start flex-wrap gap-5  w-full mt-10   md:pl-[5rem]">
+                        {
+                            todos?.map((currTodo: Todo, id: number) => (
+
+                                <div key={id} className='border-b border-neutral-200 md:w-[35rem] w-full  flex items-center bg-neutral-200/60 dark:border-neutral-950/60 dark:bg-neutral-950/60  gap-3 px-5 py-4 rounded-md'>
+                                    <div>
+                                        <Checkbox defaultChecked={currTodo.isCompleted} onClick={() => changeCompletionStatusOfTodo(currTodo.id)} />
+                                    </div>
+                                    <div className='flex items-start flex-col '>
+                                        <h1 className='text-lg tracking-tight font-medium'> {currTodo.title}</h1>
+                                        <p className='text-sm font-medium dark:text-gray-400 text-gray-500'> {currTodo.description}</p>
+                                        {
+                                            currTodo.dueDate && (
+                                                <p className='flex items-center justify-start gap-2 '>
+                                                    <span className='dark:text-emerald-500 text-emerald-600 text-sm font-semibold'>
+                                                        {
+                                                            // console.log(currTodo.dueDate)
+                                                            formatTimer(currTodo.dueDate)
+                                                        }
+                                                    </span>
+                                                    <AlarmCheck strokeWidth={1.5} className='w-5 h-5' />
+                                                </p>
+                                            )
+                                        }
+                                    </div>
 
 
-                            <div className=' ml-auto flex items-center gap-3'>
-                                <UpdateTodo todo={currTodo} />
-                                <DeleteTodo todoId={currTodo.id} todoTitle={currTodo.title} />
-                            </div>
+                                    <div className=' ml-auto flex items-center gap-3'>
+                                        <UpdateTodo todo={currTodo} />
+                                        <DeleteTodo todoId={currTodo.id} todoTitle={currTodo.title} />
+                                    </div>
 
 
-                        </div>
-                    ))
+                                </div>
+                            ))
+                        }
+                    </div>
+                ) : (
+                    <div className=" mt-[7dvh] shadow-2xl max-w-md rounded-xl flex flex-col items-center justify-center text-center py-10 dark:text-neutral-400 text-neutral-600 mx-auto">
+                       <h1 className="text-3xl font-bold"> No todos yet</h1>
+                        <p className="text-sm mt-2">
+                            Stay productive by adding your first task.
+                        </p>
+                    </div>
+                )
                 }
             </div>
 
 
-        </section>
+        </section >
     )
 }
