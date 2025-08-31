@@ -1,6 +1,6 @@
 "use client"
 import Link from 'next/link'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import axios from "axios";
@@ -26,7 +26,7 @@ export default function NewVerification() {
                 toast.success(response.data)
                 setSuccess(true);
             } catch (error: any) {
-                toast.error("Error occurred while processing the new verification request")
+                toast.error(error.response.data || "Error occurred while processing the new verification request")
             }
         }
 

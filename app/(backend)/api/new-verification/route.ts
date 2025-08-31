@@ -21,6 +21,11 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Email Doesn't Exist", { status: 404 });
     }
 
+
+    if(existingUser.emailVerified){
+      return new NextResponse("User is already verified", { status: 409 });
+    }
+
     await db.user.update({
       where: {
         id: existingUser.id,
