@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import toast from 'react-hot-toast';
 import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { User } from '@prisma/client';
-import { decryptImageString, encryptImageString, updateProfileImage } from '@/hooks/image';
+// import { decryptImageString, encryptImageString, updateProfileImage } from '@/hooks/image';
+import axios from 'axios';
 
 
 
@@ -28,14 +29,17 @@ export default function UpdateProfileImage({ userData }: UpdateProfileImageProps
 
 
     async function HandleProfileImageUpdate(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
-        if (imageSrc)
-            await updateProfileImage(userData.email, imageSrc)
-                .then((response: string) => {
-                    toast.success(response)
-                }).catch((error: string) => toast.error(error))
-
-
+        try {
+            event.preventDefault()
+            if (!imageSrc) {
+                toast.error("Image is required")
+                return;
+            }
+            const response = await axios.patch(`/api/upload-user-image`, { email: userData.email, image: imageSrc })
+            toast.success(response.data);
+        } catch (error: any) {
+            toast.error(error.response.data || "Error Encountered")
+        }
     }
 
     function HandleImageUrl(event: React.ChangeEvent<HTMLInputElement>) {
