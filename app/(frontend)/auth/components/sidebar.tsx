@@ -6,21 +6,12 @@ import useRoutes from '@/hooks/navigation-routes'
 import { redirect } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { signOut } from 'next-auth/react'
+import { LogOut } from 'lucide-react'
 
-interface SidebarProps {
-    user: {
-        name?: string | null
-        email?: string | null
-    } | null | undefined
-}
 
-export default function Sidebar({ user }: SidebarProps) {
+export default function Sidebar() {
     const routes = useRoutes()
-    useEffect(() => {
-        if (!user) {
-            redirect("/guest/Login")
-        }
-    }, [user])
+  
     return (
         <React.Fragment>
             <aside className=' bg-neutral-200 dark:bg-neutral-950 md:w-[20rem] md:flex flex-col justify-between gap-5 p-5 hidden h-full min-h-[93dvh] border dark:border-neutral-800/60 border-neutral-200/60 '>
@@ -38,9 +29,9 @@ export default function Sidebar({ user }: SidebarProps) {
                     }
                 </nav>
 
-                <div className='flex dark:bg-neutral-900 bg-neutral-50 gap-5 py-3 px-5 rounded-md shadow-md w-[85%]  flex-col'>
-                    <Button className='flex items-center justify-start gap-2' variant={"link"} onClick={() => signOut({ redirect: true,  })}>
-                        Log Out
+                <div className='rounded-md shadow-md  mb-8 ml-4  '>
+                    <Button className='flex items-center justify-start gap-2 w-[50%] py-3 px-5' size={"sm"}  onClick={() => signOut({ redirect: true, })}>
+                        Log Out <LogOut  />
                     </Button>
                 </div>
             </aside>

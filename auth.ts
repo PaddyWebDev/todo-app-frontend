@@ -1,7 +1,7 @@
 import NextAuth, { DefaultSession } from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import db from "@/lib/db";
-import { getUserById } from "@/hooks/user";
+import { fetchPasswordByEmail, getUserById } from "@/hooks/user";
 import { loginSchema } from "./schema/form-schema";
 import Credentials from "next-auth/providers/credentials";
 import bcryptjs from "bcryptjs";
@@ -91,7 +91,7 @@ export const {
         if (validatedFields.success) {
           const { email, password } = validatedFields.data;
 
-          const user = await getUserByEmail(email);
+          const user = await fetchPasswordByEmail(email);
           if (!user || !user.password) {
             return null;
           }

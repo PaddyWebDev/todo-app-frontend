@@ -31,22 +31,27 @@ export default function CreateTodo() {
         try {
             startTransition(async () => {
                 const validatedFields = await validateFields(createTodoFormSchema, formData).catch((error) => toast.error(error))
+
+                if (!validatedFields?.reminder) {
+                    toast.error("Date field is required")
+                    return;
+                }
                 const expiry = new Date(validatedFields?.reminder!).toISOString()
                 const data = {
                     title: validatedFields?.title,
                     description: validatedFields?.description,
                     priority: validatedFields?.priority || null,
-                    reminder:  expiry || null,
+                    reminder: expiry || null,
                     userId: session.data?.user.id,
                 }
 
 
                 await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/create`, data)
                     .then((data) => {
-                        toast.success(data.data.message!)
+                        toast.success(data.data!)
                         createTodoForm.reset()
                     }).catch((error: AxiosError) => {
-                        console.log(error);
+                        toast.error(error.response?.data as unknown as string || "Error Occurred")
                     })
 
             })

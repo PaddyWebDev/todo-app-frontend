@@ -3,6 +3,7 @@ import { DialogDescription, Dialog, DialogTrigger, DialogContent, DialogClose, D
 import { Trash2 } from 'lucide-react'
 import React from 'react'
 import axios, { AxiosError } from "axios";
+import toast from 'react-hot-toast';
 
 
 interface DeleteTodoProps {
@@ -17,10 +18,10 @@ export default function DeleteTodo({ todoId, todoTitle }: DeleteTodoProps) {
         await axios
             .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/delete/${todoId}`)
             .then((data) => {
-                console.log(data);
+                toast.success(data.data)
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                toast.error(error.response?.data as unknown as string || "Error Occurred");
             });
     }
 

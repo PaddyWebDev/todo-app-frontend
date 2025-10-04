@@ -32,7 +32,6 @@ export default function CreateNote() {
         resolver: zodResolver(NoteSchema),
         defaultValues: {
             title: "",
-            description: "",
             content: ""
         }
     })
@@ -44,16 +43,22 @@ export default function CreateNote() {
 
     async function handleData(formData: z.infer<typeof NoteSchema>) {
         startTransition(async () => {
-            const validatedFields = await validateFields(NoteSchema, formData).catch((error) => toast.error(error))
-            if (validatedFields.content === "") {
-                validatedFields.content = JSON.stringify(jsonData)
+            const validatedFields = NoteSchema.safeParse(formData)
+
+            if (!validatedFields.data || validatedFields.error) {
+                toast.error(validatedFields.error?.message)
+                return;
+            }
+
+            if (validatedFields.data?.content === "") {
+                validatedFields.data.content = JSON.stringify(jsonData)
             }
             await axios.post(`${process.env.NEXT_PUBLIC_SERVER_URL}/notes/create`, {
                 userId: session?.user.id,
-                ...validatedFields
+                ...validatedFields.data
             })
                 .then((data) => {
-                    toast.success(data.data.message!)
+                    toast.success(data.data!)
                     createNoteForm.reset()
                 }).catch((error: AxiosError) => {
                     toast.error(error.message)
@@ -87,19 +92,6 @@ export default function CreateNote() {
                             )}
                         />
 
-                        <FormField
-                            control={createNoteForm.control}
-                            name='description'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Description" disabled={isPending} type='search' {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
 
                         <TipTapEditor data={JSON.stringify(jsonData)} disabledStatus={isPending} contentChange={updateNoteEditorValue} />
 

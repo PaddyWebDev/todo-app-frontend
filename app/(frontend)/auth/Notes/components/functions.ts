@@ -9,9 +9,9 @@ import { generateHTML } from "@tiptap/html";
 import { formatDistanceToNow } from "date-fns";
 
 export function renderHtml(content: string) {
-  if (!content) console.log(content);
+  // if (!content) console.log(content);
 
-  // console.log(content);
+  // // console.log(content);
   return generateHTML(JSON.parse(content), [
     CharacterCount,
     OrderedList,

@@ -33,7 +33,6 @@ export default function EditNote({ note }: EditNoteProps) {
         resolver: zodResolver(NoteSchema),
         defaultValues: {
             title: note.title!,
-            description: note.description!,
             content: ""
         }
     })
@@ -50,10 +49,10 @@ export default function EditNote({ note }: EditNoteProps) {
             }
             await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/notes/update/${note.id!}`, validatedFields)
                 .then((data) => {
-                    toast.success(data.data.message)
+                    toast.success(data.data)
                 })
                 .catch((error: AxiosError) => {
-                    toast.error(error.message)
+                    toast.error(error.response?.data as unknown as string || "Error Occurred")
                 })
         })
     }
@@ -83,19 +82,6 @@ export default function EditNote({ note }: EditNoteProps) {
                             )}
                         />
 
-                        <FormField
-                            control={editNoteForm.control}
-                            name='description'
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Description</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Description" disabled={isPending} type='search' {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
 
                         <TipTapEditor data={note.content!} disabledStatus={isPending} contentChange={updateNoteEditorValue} />
                         <Button disabled={isPending} type='submit'>

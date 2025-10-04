@@ -21,6 +21,41 @@ export async function getUserById(id: string) {
   });
 }
 
+export async function fetchPasswordByEmail(email: string) {
+  return db.user.findUnique({
+    where: {
+      email: email,
+    },
+    select: {
+      password: true,
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+}
+
+export async function checkUserExistByEmail(email: string) {
+  return !db.user.findUnique({
+    where: {
+      email,
+    },
+    select: {
+      id: true,
+    },
+  });
+}
+export async function checkUserExistById(id: string): Promise<Boolean> {
+  return !!db.user.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      name: true,
+    },
+  });
+}
+
 export async function verifyUserEmail(token: string): Promise<string> {
   const existingToken = await getVerificationTokenByToken(token);
 

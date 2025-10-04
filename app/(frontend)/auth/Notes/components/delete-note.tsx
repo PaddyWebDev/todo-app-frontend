@@ -3,6 +3,7 @@ import { DialogDescription, Dialog, DialogTrigger, DialogContent, DialogClose, D
 import { Trash2 } from 'lucide-react'
 import React from 'react'
 import axios, { AxiosError } from "axios";
+import toast from 'react-hot-toast';
 
 
 interface DeleteNoteProps {
@@ -15,10 +16,10 @@ export default function DeleteNote({ noteId, noteTitle }: DeleteNoteProps) {
         await axios
             .delete(`${process.env.NEXT_PUBLIC_SERVER_URL}/notes/delete/${noteId}`)
             .then((data) => {
-                console.log(data);
+                toast.success(data.data)
             })
             .catch((error: AxiosError) => {
-                console.log(error);
+                toast.error(error.response?.data as unknown as string || "Error Occurred")
             });
     }
 

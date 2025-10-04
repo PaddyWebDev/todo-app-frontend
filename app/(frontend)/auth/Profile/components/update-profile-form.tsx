@@ -41,7 +41,6 @@ export default function UpdateProfile({ userData }: UpdateProfileProps) {
             ...validatedFields
         })
             .then(async (data) => {
-                console.log(data);
                 toast.success("User Updated")
                 await update({
                     ...session,
@@ -53,7 +52,6 @@ export default function UpdateProfile({ userData }: UpdateProfileProps) {
                 })
 
             }).catch((error: AxiosError) => {
-                console.log(error);
                 toast.error(error.request.response)
             })
 

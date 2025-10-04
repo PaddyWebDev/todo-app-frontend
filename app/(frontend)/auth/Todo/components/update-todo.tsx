@@ -39,14 +39,14 @@ export default function UpdateTodo({ todo }: UpdateTodoProps) {
                 const validatedFields = await validateFields(updateTodoSchema, formData).catch((error) => toast.error(error))
                 await axios.put(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/update/${todo.id}`, validatedFields)
                     .then((data) => {
-                        toast.success(data.data.message!)
+                        toast.success(data.data!)
                     }).catch((error: AxiosError) => {
-                        console.log(error.response?.data);
+                        toast.error(error.response?.data as unknown as string || "Error Occurred");
                     })
 
             })
         } catch (error) {
-            console.log(error);
+            toast.error("Error Occurred")
         }
     }
 

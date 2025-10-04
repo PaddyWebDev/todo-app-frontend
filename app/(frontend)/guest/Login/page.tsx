@@ -44,7 +44,6 @@ export default function Login() {
                     router.push("/auth/Notes")
                 })
                 .catch((error: AxiosError) => {
-                    console.log(error);
                     toast.error(error.response?.data as unknown as string)
                 })
 

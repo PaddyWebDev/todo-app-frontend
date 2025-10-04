@@ -22,11 +22,9 @@ export async function getVerificationTokenByToken(token: string) {
       },
     });
 
-    console.log(verificationToken);
 
     return verificationToken;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }

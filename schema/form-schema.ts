@@ -47,9 +47,6 @@ export const resetPassSchema = z.object({
 
 export const NoteSchema = z.object({
   title: z.string().min(5, "Title must contain 5 character(s)"),
-  description: z
-    .string()
-    .min(6, "Description must contain at least 6 character(s)"),
   content: z.string(),
 });
 
