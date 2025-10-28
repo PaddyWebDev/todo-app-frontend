@@ -5,7 +5,7 @@ import Navbar from "./(frontend)/auth/components/navbar";
 export default function Home() {
   const router = useRouter()
   return (
-    <main className="min-h-screen bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200">
+    <main className="min-h-screen bg-neutral-50 text-neutral-800 dark:bg-neutral-900 dark:text-neutral-200 w-full">
       <Navbar />
 
       {/* Hero Section */}
