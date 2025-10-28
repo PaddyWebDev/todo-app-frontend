@@ -6,6 +6,7 @@ import { Toaster } from "react-hot-toast";
 import AuthContext from "@/provider/auth-context";
 import { QueryClientProvider } from "@tanstack/react-query";
 import queryClient from "@/lib/tanstack-query";
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 const archivo = Archivo({ subsets: ["latin"] });
 
@@ -23,22 +24,22 @@ export default function RootLayout({
     <html lang="en">
       <AuthContext>
         <body className={archivo.className}>
-          <QueryClientProvider client={queryClient}>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-            // disableTransitionOnChange
-            >
-              <Toaster
-                position="top-right"
-                reverseOrder={false}
-              />
-              {children}
-            </ThemeProvider>
-          </QueryClientProvider>
-
-
+          <SidebarProvider>
+            <QueryClientProvider client={queryClient}>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+              // disableTransitionOnChange
+              >
+                <Toaster
+                  position="top-right"
+                  reverseOrder={false}
+                />
+                {children}
+              </ThemeProvider>
+            </QueryClientProvider>
+          </SidebarProvider>
         </body>
       </AuthContext>
     </html>

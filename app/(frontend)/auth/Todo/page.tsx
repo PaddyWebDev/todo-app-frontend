@@ -16,18 +16,20 @@ import { decryptSocketData } from '@/hooks/cryptr'
 import { useQuery } from '@tanstack/react-query'
 import { getSessionUser } from '@/hooks/user'
 import queryClient from '@/lib/tanstack-query'
+import Loader from '@/components/loader'
 
-async function fetchTodoDetails() {
+async function fetchTodoDetails(): Promise<Todo[]> {
     const session = await getSessionUser();
     const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/get/${session?.user.id}`)
     return response.data
 }
 
 export default function TodoRoute() {
-    const { data, isLoading, isError } = useQuery({
+    const { data, isLoading, isError } = useQuery<Todo[]>({
         queryKey: ['todos'],
         queryFn: fetchTodoDetails,
     });
+
 
     function formatTimer(timerDate: Date) {
         const distance = formatDistance(new Date(Date.now()), new Date(timerDate))
@@ -97,13 +99,14 @@ export default function TodoRoute() {
     }, [])
 
 
-    if (isLoading)
+    if (isLoading) {
         return (
-            <div className="md:mt-0  mt-[17dvh] shadow-2xl  rounded-xl flex flex-col items-center justify-center text-center py-10 mx-auto">
-                <div className="w-12 h-12 border-4 border-neutral-50 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-full h-dvh flex items-center justify-center ">
+                <Loader />
             </div>
         )
-    if (isError) return (
+    }
+    if (isError || !data) return (
         <div className="md:mt-0  mt-[17dvh] shadow-2xl rounded-xl flex flex-col items-center justify-center text-center dark:bg-neutral-950 p-5  mx-auto">
             <span className='text-red-400 flex items-center gap-3'>
                 <h1 className='flex  font-xl font-bold gap-4'>Error Occurred </h1>
@@ -132,7 +135,7 @@ export default function TodoRoute() {
                 <div className="flex  items-start flex-wrap gap-5  w-full mt-10   md:pl-[5rem]">
 
 
-                    {!data || data.length == 0 ? (
+                    {data.length == 0 ? (
                         <div className=" mt-[7dvh] shadow-2xl max-w-md rounded-xl flex flex-col items-center justify-center text-center py-10 dark:bg-neutral-800  mx-auto px-4">
                             <h1 className="text-3xl font-bold">No todos yet</h1>
                             <p className="text-sm mt-2">
@@ -140,7 +143,7 @@ export default function TodoRoute() {
                             </p>
                         </div>
                     ) : (
-                        data?.map((currTodo: Todo, id: number) => (
+                        data.map((currTodo: Todo, id: number) => (
 
                             <div key={id} className='border-b border-neutral-200 md:w-[35rem] w-full  flex items-center bg-neutral-200/60 dark:border-neutral-950/60 dark:bg-neutral-950/60  gap-3 px-5 py-4 rounded-md'>
                                 <div>

@@ -55,7 +55,7 @@ export default function UpdateProfileImage({ userData }: UpdateProfileImageProps
 
     }
     return (
-        <section className="bg-neutral-100 dark:bg-neutral-900 mt-5 rounded p-8 w-full shadow-md ">
+        <section className="bg-neutral-100 dark:bg-neutral-900  rounded p-8 w-full shadow-md ">
             <h1 className="scroll-m-20  pb-2 text-xl mt-2 font-semibold tracking-tight ">
                 Profile Image
             </h1>

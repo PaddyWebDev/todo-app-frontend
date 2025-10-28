@@ -16,6 +16,7 @@ import { TriangleAlert } from 'lucide-react';
 import { getSessionUser } from '@/hooks/user';
 import axios from 'axios';
 import queryClient from '@/lib/tanstack-query';
+import Loader from '@/components/loader';
 
 async function fetchNotesDetails() {
     const session = await getSessionUser();
@@ -70,17 +71,16 @@ export default function RenderNotes() {
             socket.off("note-deleted")
             socket.off("note-updated")
         }
-    }, []); 
+    }, []);
 
 
-    if (isLoading)
+    if (isLoading) {
         return (
-            <div className="md:mt-0  mt-[17dvh] shadow-2xl  rounded-xl flex flex-col items-center justify-center text-center py-10 mx-auto">
-                <div className="w-12 h-12 border-4 border-neutral-50 border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-full h-dvh flex items-center justify-center ">
+                <Loader />
             </div>
         )
-
-
+    }
     if (isError)
         return (
             <div className="md:mt-0  mt-[17dvh] shadow-2xl rounded-xl flex flex-col items-center justify-center text-center dark:bg-neutral-950 p-5  mx-auto">

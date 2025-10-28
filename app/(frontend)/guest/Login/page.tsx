@@ -50,7 +50,7 @@ export default function Login() {
         })
     }
     return (
-        <section className='dark:bg-neutral-950 rounded-md bg-neutral-100 shadow-md flex items-center flex-col sm:w-[30rem]'>
+        <section className='dark:bg-neutral-950 w-11/12 rounded-md bg-neutral-100 shadow-md flex items-center flex-col sm:w-[30rem]'>
             <div>
                 <h1 className='text-3xl font-bold leading-tight tracking-tighter p-5'>Sign in to your account</h1>
             </div>

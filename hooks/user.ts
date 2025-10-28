@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import db from "@/lib/db";
 import { getVerificationTokenByToken } from "@/lib/verification-token";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 export async function getUserByEmail(email: string) {
   return db.user.findUnique({
@@ -95,3 +95,8 @@ export async function socialLogin(provider: "github" | "google") {
     callbackUrl: DEFAULT_LOGIN_REDIRECT,
   });
 }
+
+export default async function SignOutUser() {
+  await signOut();
+}
+

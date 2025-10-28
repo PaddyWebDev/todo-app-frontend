@@ -1,21 +1,23 @@
-import { hashPassword, verifyPassword } from "@/hooks/password";
+import { hashPassword } from "@/hooks/password";
 import { getUserById } from "@/hooks/user";
 import db from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
   try {
-    const { newPassword, userId } = await request.json();
+    const userId = request.nextUrl.searchParams.get("userId");
+    if (!userId) return new NextResponse("UserId is required", { status: 400 });
+    const { password } = await request.json();
 
     const checkIfUserExist = await getUserById(userId);
-    if (!checkIfUserExist || !checkIfUserExist.password) {
+    if (!checkIfUserExist) {
       return new NextResponse("User not found", { status: 404 });
     }
 
-    if (await verifyPassword(newPassword, checkIfUserExist.password)) {
+    if (!checkIfUserExist.password) {
       return new NextResponse(
-        "Previous & current passwords must be different.",
-        { status: 409 }
+        "This account doesn't support email password login",
+        { status: 400 }
       );
     }
 
@@ -24,7 +26,7 @@ export async function PATCH(request: NextRequest) {
         id: userId,
       },
       data: {
-        password: await hashPassword(newPassword),
+        password: await hashPassword(password),
       },
     });
 

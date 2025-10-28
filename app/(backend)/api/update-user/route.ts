@@ -4,19 +4,28 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(request: NextRequest) {
   try {
+    const userId = request.nextUrl.searchParams.get("userId");
+
+    if (!userId) {
+      return new NextResponse("UserId is required", { status: 400 });
+    }
     const { name, email, oldEmail } = await request.json();
 
-    const getUser = await getUserByEmail(oldEmail);
-    if (!getUser) return new NextResponse("User not found", { status: 404 });
+    const checkIfUserExist = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        name: true,
+      },
+    });
 
-    if (getUser.email === email)
-      return new NextResponse("Previous & current emails must be different.", {
-        status: 409,
-      });
+    if (!checkIfUserExist)
+      return new NextResponse("User not found", { status: 404 });
 
     await db.user.update({
       where: {
-        id: getUser.id,
+        id: userId,
       },
       data: {
         name,
