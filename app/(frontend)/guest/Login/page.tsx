@@ -77,7 +77,15 @@ export default function Login() {
                             name='password'
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Password</FormLabel>
+                                    <FormLabel className='flex items-center justify-between'>
+                                        <h3>
+                                            Password
+                                        </h3>
+
+                                        <Link className="text-zinc-900 underline-offset-4 text-sm  hover:underline cursor-pointer dark:text-zinc-50" href={"/guest/forgot-password"}>
+                                            Forgot Password?
+                                        </Link>
+                                    </FormLabel>
                                     <FormControl>
                                         <Input placeholder="*********" disabled={isPending} type={showPassword ? `search` : `password`} {...field} />
                                     </FormControl>

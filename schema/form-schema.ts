@@ -101,3 +101,27 @@ export const updateTodoSchema = z.object({
   priority: z.optional(z.string()),
   dueDate: z.optional(z.string()),
 });
+
+export const resetPassFormSchema = z
+  .object({
+    newPassword: z
+      .string()
+      .min(8, {
+        message: "Password must contain at least 8 character(s)",
+      })
+      .max(35, {
+        message: "Password must contain up to 35 character(s) only",
+      }),
+    confirmPassword: z
+      .string()
+      .min(8, {
+        message: "Password must contain at least 8 character(s)",
+      })
+      .max(35, {
+        message: "Password must contain up to 35 character(s) only",
+      }),
+  })
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });

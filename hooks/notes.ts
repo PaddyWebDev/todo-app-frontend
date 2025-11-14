@@ -1,27 +1,20 @@
 "use server";
 
-import db from "@/lib/db";
+import prisma from "@/lib/db";
 import { Note } from "@prisma/client";
 
 export async function getNoteById(id: string): Promise<Note | null> {
-  return await db.note.findUnique({
+  return await prisma.note.findUnique({
     where: {
       id: id,
     },
   });
 }
 
-export async function getNotesBySessionUser(
-  id: string
-): Promise<Note[] | null> {
-  if (!id) {
-    return [];
-  }
-
-  return await db.note.findMany({
+export async function getNotesBySessionUser(id: string): Promise<Note[]> {
+  return await prisma.note.findMany({
     where: {
       userId: id,
     },
   });
 }
-

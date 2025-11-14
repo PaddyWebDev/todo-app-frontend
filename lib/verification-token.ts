@@ -16,7 +16,7 @@ export async function getVerificationTokenByEmail(email: string) {
 }
 export async function getVerificationTokenByToken(token: string) {
   try {
-    const verificationToken = await prisma?.verificationToken.findUnique({
+    const verificationToken = await db?.verificationToken.findUnique({
       where: {
         token,
       },

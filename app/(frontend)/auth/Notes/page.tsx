@@ -14,14 +14,14 @@ import DeleteNote from './components/delete-note';
 import { useQuery } from '@tanstack/react-query';
 import { TriangleAlert } from 'lucide-react';
 import { getSessionUser } from '@/hooks/user';
-import axios from 'axios';
 import queryClient from '@/lib/tanstack-query';
 import Loader from '@/components/loader';
+import { getNotesBySessionUser } from '@/hooks/notes';
 
 async function fetchNotesDetails() {
     const session = await getSessionUser();
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/notes/get/${session?.user.id}`)
-    return response.data;
+    const data = await getNotesBySessionUser(session?.user.id!);
+    return data;
 }
 
 export default function RenderNotes() {
@@ -76,9 +76,7 @@ export default function RenderNotes() {
 
     if (isLoading) {
         return (
-            <div className="w-full h-dvh flex items-center justify-center ">
-                <Loader />
-            </div>
+            <Loader />
         )
     }
     if (isError)

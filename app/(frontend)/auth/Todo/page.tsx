@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import CreateTodo from './components/create-todo'
 import { getTodoBySessionUserId } from '@/hooks/todo'
 import { Todo } from '@prisma/client'
-import { AlarmCheck, TriangleAlert } from 'lucide-react'
+import { AlarmCheck } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import socket from '@/lib/socket';
 import DeleteTodo from './components/delete-todo'
@@ -17,18 +17,18 @@ import { useQuery } from '@tanstack/react-query'
 import { getSessionUser } from '@/hooks/user'
 import queryClient from '@/lib/tanstack-query'
 import Loader from '@/components/loader'
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons'
 
-async function fetchTodoDetails(): Promise<Todo[]> {
-    const session = await getSessionUser();
-    const response = await axios.get(`${process.env.NEXT_PUBLIC_SERVER_URL}/todo/get/${session?.user.id}`)
-    return response.data
-}
+
 
 export default function TodoRoute() {
-    const { data, isLoading, isError } = useQuery<Todo[]>({
+    const { data, isLoading, isError, isFetching } = useQuery<Todo[]>({
         queryKey: ['todos'],
-        queryFn: fetchTodoDetails,
+        queryFn: async () => {
+            return await getTodoBySessionUserId((await getSessionUser())?.user.id!)
+        }
     });
+
 
 
     function formatTimer(timerDate: Date) {
@@ -99,23 +99,20 @@ export default function TodoRoute() {
     }, [])
 
 
-    if (isLoading) {
+    if (isLoading || isFetching) {
         return (
-            <div className="w-full h-dvh flex items-center justify-center ">
-                <Loader />
+            <Loader />
+        )
+    }
+    if (isError || data === undefined || !data.length === undefined) {
+        return (
+            <div className='h-dvh w-full flex items-center justify-center'>
+                <div className="flex flex-row text-red-500 bg-neutral-100 font-bold items-center gap-2 px-5 py-3 shadow-md text-2xl" >
+                    Error Occurred <ExclamationTriangleIcon className=' h-6 w-6' />
+                </div>
             </div>
         )
     }
-    if (isError || !data) return (
-        <div className="md:mt-0  mt-[17dvh] shadow-2xl rounded-xl flex flex-col items-center justify-center text-center dark:bg-neutral-950 p-5  mx-auto">
-            <span className='text-red-400 flex items-center gap-3'>
-                <h1 className='flex  font-xl font-bold gap-4'>Error Occurred </h1>
-                <TriangleAlert />
-            </span>
-        </div>
-    )
-
-
 
 
     async function changeCompletionStatusOfTodo(todoId: string) {

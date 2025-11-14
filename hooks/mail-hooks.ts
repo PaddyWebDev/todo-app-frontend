@@ -19,22 +19,13 @@ export async function sendVerificationEmail(
   });
 }
 
-export async function sendResetPassEmail(
-  data: z.infer<typeof resetPassSchema>
-): Promise<string> {
-  const validatedFields = resetPassSchema.safeParse(data);
-  if (!validatedFields.success) {
-    throw new Error("Invalid Email");
-  }
-
-  const { email } = validatedFields.data;
-
+export async function sendResetPassEmail(email: string): Promise<string> {
   const existingUser = await getUserByEmail(email);
 
   if (!existingUser) throw new Error("Email Not Found");
   const passwordResetToken = await generatePasswordResetToken(email);
 
-  const resetLink = `${process.env.AUTH_TRUST_HOST}/reset-password?token=${passwordResetToken.token}`;
+  const resetLink = `${process.env.AUTH_TRUST_HOST}/guest/reset-password?token=${passwordResetToken.token}`;
   await transporter.sendMail({
     to: passwordResetToken.email,
     subject: "Reset your password",

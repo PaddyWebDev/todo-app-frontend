@@ -4,6 +4,7 @@ import db from "@/lib/db";
 import { getVerificationTokenByToken } from "@/lib/verification-token";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { signIn, signOut } from "@/auth";
+import prisma from "@/lib/db";
 
 export async function getUserByEmail(email: string) {
   return db.user.findUnique({
@@ -100,3 +101,23 @@ export default async function SignOutUser() {
   await signOut();
 }
 
+export async function returnUserDataForUpdate(
+  userId: string
+): Promise<{ name: string; email: string } | null> {
+  const data = await prisma.user.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      name: true,
+      email: true,
+    },
+  });
+
+  if (!data || !data.name) return null;
+
+  return {
+    name: data.name,
+    email: data.email,
+  };
+}

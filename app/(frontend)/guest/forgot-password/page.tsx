@@ -27,9 +27,15 @@ export default function ResetPassword() {
 
     async function handleData(data: z.infer<typeof resetPassSchema>) {
         startTransition(async () => {
-            await sendResetPassEmail(data)
+            const validatedFields = resetPassSchema.safeParse(data);
+            if (validatedFields.error || !validatedFields.data) {
+                toast.error("Failed to validated");
+                return;
+            }
+            await sendResetPassEmail(validatedFields.data.email)
                 .then((data) => {
                     toast.success(data)
+                    resetPassForm.reset();
                 }).catch((error) => {
                     toast.error(error)
                 })
@@ -37,7 +43,7 @@ export default function ResetPassword() {
     }
 
     return (
-        <section className='md:w-[30rem] sm:w-[70%] w-[90%] dark:bg-zinc-800 bg-zinc-100 rounded shadow-md p-5 space-y-8'>
+        <section className='md:w-[30rem] sm:w-[70%] w-[90%] dark:bg-neutral-800 bg-neutral-100 rounded shadow-md p-5 space-y-8'>
             <header className='text-center'>
                 <h1 className='text-3xl font-semibold'>Reset Password</h1>
             </header>
@@ -69,7 +75,7 @@ export default function ResetPassword() {
             </div>
 
             <footer>
-                <Link className="text-zinc-900 underline-offset-4 text-sm  hover:underline cursor-pointer dark:text-zinc-50" href="/guest/Login">Back to Login</Link>
+                <Link className="text-neutral-900 underline-offset-4 text-sm  hover:underline cursor-pointer dark:text-neutral-50" href="/guest/Login">Back to Login</Link>
             </footer>
         </section>
     )

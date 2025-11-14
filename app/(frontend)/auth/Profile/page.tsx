@@ -1,12 +1,9 @@
 "use client"
 
 
-import UpdateProfile from "./components/update-profile-form";
-import UpdatePassword from "./components/update-password-form";
 import UpdateProfileImage from "./components/update-profile-image";
 import { User } from "@prisma/client";
-import { useCallback, useEffect, useState } from "react";
-import { getSessionUser, getUserByEmail } from "@/hooks/user";
+import { getSessionUser, returnUserDataForUpdate } from "@/hooks/user";
 import Loader from "@/components/loader";
 import { useQuery } from "@tanstack/react-query";
 import { TriangleAlert } from "lucide-react";
@@ -14,7 +11,7 @@ import { TriangleAlert } from "lucide-react";
 
 async function fetchUserDetails() {
     const sessionUser = await getSessionUser()
-    const currentUser = await getUserByEmail(sessionUser?.user?.email!)
+    const currentUser = await returnUserDataForUpdate(sessionUser?.user.id!)
     return currentUser;
 }
 
@@ -30,9 +27,7 @@ export default function Profile() {
 
     if (isLoading) {
         return (
-            <div className="w-full h-dvh flex items-center justify-center ">
-                <Loader />
-            </div>
+            <Loader />
         )
     }
 
@@ -49,7 +44,7 @@ export default function Profile() {
 
 
     return (
-        <main className=" min-h-screen  w-full">
+        <main className=" h-[91dvh]  w-full">
             <section className="max-w-screen-lg mx-auto px-5 py-5 mt-[10dvh] rounded-xl dark:bg-neutral-800">
                 <div className="  rounded-md overflow-hidden ">
                     <header className="bg-neutral-100 dark:bg-neutral-950 px-4 py-6 shadow-md mb-2">
